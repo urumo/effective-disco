@@ -1,0 +1,26 @@
+# class Picker starts the brute force of the locker
+class Picker
+  def self.from: (untyped count, untyped value) -> untyped
+
+  attr_reader disk_count: Integer
+
+  attr_reader from: Array[Integer]
+
+  attr_reader to: Array[Integer]
+
+  attr_reader skip: Array[Array[Integer]]
+
+  attr_reader logger: Logger
+
+  attr_reader result: Array[Array[Integer]]
+
+  attr_reader up_to: Integer
+
+  def initialize: (?disk_count: ::Integer, ?from: Array[Integer], ?to: ::Array[Integer], ?skip: ::Array[Array[Integer]], ?up_to: ::Integer) -> void
+
+  def pick: () -> nil
+
+  private
+
+  def pick!: (?::Integer index) -> (nil)
+end
