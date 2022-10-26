@@ -28,6 +28,7 @@ class Picker
     @logger = Logger.new($stdout)
     @up_to = up_to
     @result = []
+    raise ArgumentError, 'Invalid opening position, already included in skip list' if skip.include?(to)
   end
 
   def pick
@@ -35,9 +36,18 @@ class Picker
 
     result << from # push initial value of the locker to the results array
 
-    pick!(-1) until from == to
+    until from == to
+      from_dup = from.dup # make a copy of the current position of the locker
 
-    # result.uniq!
+      pick!(-1)
+
+      next unless from_dup == from # increment the current position of the locker if no changes were made
+
+      @from = from.map { |i| (i + 1) % up_to }
+
+      result << @from unless skip.include?(@from)
+    end
+
     logger.info "Result: #{result}"
     nil
   end
@@ -49,8 +59,11 @@ class Picker
 
     dup_lock = @from.dup # duplicate the locker in case we need to revert the changes
 
-    dup_lock[index] = (dup_lock[index] % up_to) + 1 if dup_lock[index] < to[index] # increment the value of the wheel
+    dup_lock[index] = (dup_lock[index] + 1) % up_to unless dup_lock[index] == to[index]
+    # increment the value of the wheel
     # until maximum value is reached, then just roll to 0
+    # since the program wasn't intended to find the shortest route to the opening sequence
+    # we just increment until we find it
 
     unless skip.include?(dup_lock)
       result << dup_lock unless result.include?(dup_lock)
