@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'logger'
+require 'set'
 
 # class Picker starts the brute force of the locker
 class Picker
@@ -27,7 +28,7 @@ class Picker
     @skip = skip
     @logger = Logger.new($stdout)
     @up_to = up_to
-    @result = []
+    @result = Set[]
     raise ArgumentError, 'Invalid opening position, already included in skip list' if skip.include?(to)
   end
 
@@ -66,7 +67,7 @@ class Picker
     # we just increment until we find it
 
     unless skip.include?(dup_lock)
-      result << dup_lock unless result.include?(dup_lock)
+      result << dup_lock
 
       @from = dup_lock # if the new value is not in the skip list, then we can assign it to the locker
     end

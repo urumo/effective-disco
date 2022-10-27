@@ -12,7 +12,7 @@ class Picker
 
   attr_reader logger: Logger
 
-  attr_reader result: Array[Array[Integer]]
+  attr_reader result: Set[Array[Integer]]
 
   attr_reader up_to: Integer
 
